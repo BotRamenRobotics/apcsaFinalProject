@@ -10,7 +10,7 @@ public class Game {
   private int msElapsed;
   private int timesGet;
   private int timesAvoid;
-  private String userPic = "images/user.gif"; //Useful
+  private String userPic = "images/user.gif"; 
 
   private int day; //Just here in case
   

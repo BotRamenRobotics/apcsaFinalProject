@@ -10,6 +10,7 @@ public class User {
 
         this.name = name;
         money = 0;
+    
     }
 
     public int getMoney() {
