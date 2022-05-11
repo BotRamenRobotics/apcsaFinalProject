@@ -1,6 +1,6 @@
 /* Game Class Starter File
  * Last Edit: 5/6/2021
- * Author: _____________________
+ * Author: Raymond Galvez & Kenneth Wong 
  */
 
 public class Game {
@@ -10,7 +10,9 @@ public class Game {
   private int msElapsed;
   private int timesGet;
   private int timesAvoid;
-  private String userPic = "images/user.gif";
+  private String userPic = "images/user.gif"; //Useful
+
+  private int day; //Just here in case
   
   public Game() {
 
