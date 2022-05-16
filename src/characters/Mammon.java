@@ -1,6 +1,6 @@
 package characters;
 
-public class Mammon extends Character{
+public class Mammon extends Demon{
     
 
     public Mammon() {

@@ -17,7 +17,7 @@ public class Game {
   public Game() {
 
     grid = new Grid(10, 10);
-    userRow = 3;
+    userRow = 7;
     msElapsed = 0;
     timesGet = 0;
     timesAvoid = 0;

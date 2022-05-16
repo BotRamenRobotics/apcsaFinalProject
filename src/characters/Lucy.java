@@ -1,10 +1,10 @@
 package characters;
 
-public class Lucy extends Character{
+public class Lucy extends Demon{
     
 
     public Lucy() {
         super("Lucy");
     }
-    
+
 }

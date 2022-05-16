@@ -1,12 +1,12 @@
 package characters;
 
-public class Character {
+public class Demon {
 
     private String name;
     private int affection;
     // Image field???
 
-    public Character(String name) {
+    public Demon(String name) {
         this.name = name;
         affection = 0;
     }
