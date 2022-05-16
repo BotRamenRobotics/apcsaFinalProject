@@ -4,6 +4,7 @@ public class User {
     
     private String name;
     private int money;
+    private static int energy;
 
 
     public User(String name) {
