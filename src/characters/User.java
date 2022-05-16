@@ -11,7 +11,7 @@ public class User {
 
         this.name = name;
         money = 0;
-    
+        energy = 3;
     }
 
     public int getMoney() {
@@ -22,4 +22,9 @@ public class User {
         money += m;
     }
 
+    public static void action() {
+        energy--;
+        
+    }
+    // get enrgy do that later maybe please 
 }
