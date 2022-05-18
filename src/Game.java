@@ -1,3 +1,9 @@
+
+import java.awt.*;
+import java.awt.Color;
+
+import javax.swing.*;
+
 /* Game Class Starter File
  * Last Edit: 5/6/2021
  * Author: Raymond Galvez & Kenneth Wong 
@@ -13,6 +19,8 @@ public class Game {
   private String userPic = "images/user.gif"; 
 
   private int day; //Just here in case
+
+  
   
   public Game() {
 
@@ -23,6 +31,13 @@ public class Game {
     timesAvoid = 0;
     updateTitle();
     grid.setImage(new Location(userRow, 0), userPic);
+    
+    
+
+    JPanel ah = new JPanel();
+    ShapeButton start = new ShapeButton("Start", 5);
+    
+
   }
   
   public void play() {

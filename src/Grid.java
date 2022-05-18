@@ -128,15 +128,15 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 	 * sets the background to imgName. The img is resized to fit in the grids
 	 * dimensions. setColor() is disabled
 	 * 
-	 * @param imgName
+	 * @param red
 	 */
-	public void setBackground(final String imgName) {
+	public void setBackground(final String red) {
 		this.xOffset = 0;
 		this.yOffset = 0;
 		this.xScale = 1.0;
 		this.yScale = 1.0;
 
-		backgroundImage = loadImage(imgName);
+		backgroundImage = loadImage(red);
 		bgSet = true;
 
 		repaint();
