@@ -1,7 +1,5 @@
 
 import java.awt.*;
-import java.awt.Color;
-
 import javax.swing.*;
 
 /* Game Class Starter File
@@ -17,14 +15,18 @@ public class Game {
   private int timesGet;
   private int timesAvoid;
   private String userPic = "images/user.gif"; 
+  private Color cyan = new Color(0, 188, 227);
+  private Color red = new Color(157, 34, 53);
 
   private int day; //Just here in case
+  private JPanel leftPanel;
+  private ShapeButton leftButton;
 
   
   
   public Game() {
 
-    grid = new Grid(10, 10);
+    grid = new Grid(30, 30);
     userRow = 7;
     msElapsed = 0;
     timesGet = 0;
@@ -32,12 +34,10 @@ public class Game {
     updateTitle();
     grid.setImage(new Location(userRow, 0), userPic);
     
-    
-
-    JPanel ah = new JPanel();
-    ShapeButton start = new ShapeButton("Start", 5);
-    
-
+    for (int i = 0; i < grid.getNumCols(); i++) {
+      grid.setFillColor(new Location(grid.getNumRows()-3, i), cyan);
+      grid.setFillColor(new Location(grid.getNumRows()-2, i), red); 
+    }
   }
   
   public void play() {
@@ -81,6 +81,17 @@ public class Game {
 
   }
   
+  public void handleButtonClick() {
+
+  }
+
+  public boolean checkButtonClick(int button) {
+    // if () {
+    //   return true;
+    // }
+    return false;
+  }
+
   public void populateRightEdge(){
 
   }

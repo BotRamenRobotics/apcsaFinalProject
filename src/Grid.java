@@ -130,13 +130,13 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 	 * 
 	 * @param red
 	 */
-	public void setBackground(final String red) {
+	public void setBackground(final String image) {
 		this.xOffset = 0;
 		this.yOffset = 0;
 		this.xScale = 1.0;
 		this.yScale = 1.0;
 
-		backgroundImage = loadImage(red);
+		backgroundImage = loadImage(image);
 		bgSet = true;
 
 		repaint();
@@ -171,7 +171,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 		this.xOffset += dx;
 		this.yOffset += dy;
 
-		repaint();
+		repaint();   
 	}
 
 	/**
