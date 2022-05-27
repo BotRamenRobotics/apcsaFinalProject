@@ -2,6 +2,8 @@
 import java.awt.*;
 import javax.swing.*;
 
+import characters.Demon;
+
 /* Game Class Starter File
  * Last Edit: 5/6/2021
  * Author: Raymond Galvez & Kenneth Wong 
@@ -11,38 +13,35 @@ public class Game {
 
   private Grid mapGrid;
   private Grid diGrid;
+  private Grid splashScreen;
+  private Grid splashScreen2;
+
+  private Demon demon;
+
   private int userRow;
   private int msElapsed;
-  private String userPic = "images/user.gif"; 
-  private Color cyan = new Color(0, 188, 227);
-  private Color red = new Color(157, 34, 53);
-
   private int day; //Just here in case
-  private JPanel leftPanel;
-  private ShapeButton leftButton; 
+  
+  private String userPic = "images/user.gif"; 
+
   private Location buttonTop = new Location(5, 0);
   private Location buttonBot = new Location(7, 0);
 
-  
-  
   public Game() {
 
-    diGrid = new Grid(10, 10);
+    splashScreen = new Grid(10, 20);
+    splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
     userRow = 0;
     msElapsed = 15;
     updateTitle();
-    diGrid.setImage(new Location(userRow, 0), userPic);
-    
-    for (int i = 0; i < diGrid.getNumCols(); i++) {
-      diGrid.setFillColor(new Location(diGrid.getNumRows()-5, i), cyan);
-      diGrid.setFillColor(new Location(diGrid.getNumRows()-3, i), red); 
-    }
   }
   
   public void play() {
 
     while (!isGameOver()) {
-      diGrid.pause(100);
+      splashScreen();
+      // splashScreen2();
+      mapGrid();
       //handleKeyPress();
       handleButtonClick();
       if (msElapsed % 300 == 0) {
@@ -82,8 +81,7 @@ public class Game {
   }
   
   public void handleButtonClick() {
-
-    Location loc = diGrid.checkLastLocationClicked();
+    Location loc = splashScreen.checkLastLocationClicked();
     if(loc != null) System.out.println("Loc:" + loc);
 
     if (buttonTop.equals(loc)) {
@@ -107,6 +105,25 @@ public class Game {
   //     }
   //   return false;
   // }
+  
+  public void splashScreen() {
+    splashScreen.fullscreen();
+    splashScreen.setBackground("images/Helltaker_Cover.jpg");
+    splashScreen.waitForClick();
+  }
+
+  public void mapGrid() {
+    mapGrid = new Grid(9, 14);
+    mapGrid.setTitle("Chambers of the Glorius");
+    mapGrid.fullscreen();
+    mapGrid.setBackground("images/map.png");
+    handleKeyPress();
+  }
+
+  public void diGrid() {
+    diGrid = new Grid(20, 35);
+    diGrid.setTitle(demon.getName() + "'s Room | " + getScore());
+  }
 
   public void populateRightEdge(){
 
@@ -121,11 +138,11 @@ public class Game {
   }
   
   public int getScore() {
-    return 0;
+    return demon.getAffection();
   }
   
   public void updateTitle() {
-    diGrid.setTitle("Game:  " + getScore());
+    splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
   }
   
   public boolean isGameOver() {

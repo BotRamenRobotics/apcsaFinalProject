@@ -4,7 +4,7 @@ public class Demon {
 
     private String name;
     private int affection;
-    // Image field???
+    // private Dialogue dialogue;
 
     public Demon(String name) {
         this.name = name;
