@@ -9,7 +9,8 @@ import javax.swing.*;
 
 public class Game {
 
-  private Grid grid;
+  private Grid mapGrid;
+  private Grid diGrid;
   private int userRow;
   private int msElapsed;
   private String userPic = "images/user.gif"; 
@@ -26,22 +27,22 @@ public class Game {
   
   public Game() {
 
-    grid = new Grid(10, 10);
+    diGrid = new Grid(10, 10);
     userRow = 0;
     msElapsed = 15;
     updateTitle();
-    grid.setImage(new Location(userRow, 0), userPic);
+    diGrid.setImage(new Location(userRow, 0), userPic);
     
-    for (int i = 0; i < grid.getNumCols(); i++) {
-      grid.setFillColor(new Location(grid.getNumRows()-5, i), cyan);
-      grid.setFillColor(new Location(grid.getNumRows()-3, i), red); 
+    for (int i = 0; i < diGrid.getNumCols(); i++) {
+      diGrid.setFillColor(new Location(diGrid.getNumRows()-5, i), cyan);
+      diGrid.setFillColor(new Location(diGrid.getNumRows()-3, i), red); 
     }
   }
   
   public void play() {
 
     while (!isGameOver()) {
-      grid.pause(100);
+      diGrid.pause(100);
       //handleKeyPress();
       handleButtonClick();
       if (msElapsed % 300 == 0) {
@@ -56,7 +57,7 @@ public class Game {
   public void handleKeyPress(){
 
     //check last key pressed
-    int key = grid.checkLastKeyPressed();
+    int key = mapGrid.checkLastKeyPressed();
     System.out.println(key);
 
     //set "w" key to move the plane up
@@ -69,10 +70,10 @@ public class Game {
 
         //shift the user picture up in the array
         Location loc = new Location(userRow, 0);
-        grid.setImage(loc, "user.gif");
+        mapGrid.setImage(loc, userPic);
         
         Location oldLoc = new Location(userRow+1, 0);
-        grid.setImage(oldLoc, null);
+        mapGrid.setImage(oldLoc, null);
 
   }
     //if I push down arrow, then plane goes down
@@ -81,20 +82,31 @@ public class Game {
   }
   
   public void handleButtonClick() {
-      grid.waitForClick();
-      if(checkButtonClick() == true) {
-        System.out.println("hi!");
-      }
+
+    Location loc = diGrid.checkLastLocationClicked();
+    if(loc != null) System.out.println("Loc:" + loc);
+
+    if (buttonTop.equals(loc)) {
+      System.out.println("top");
+    } else if (buttonBot.equals(loc)) {
+      System.out.println("bot");
+    }
+
+
+      // grid.waitForClick();
+      // if(checkButtonClick() == true) {
+      //   System.out.println("hi!");
+      // }
   }
 
-  public boolean checkButtonClick() {
-      if (grid.checkLastLocationClicked() != null && 
-         (grid.checkLastLocationClicked().equals(buttonBot) || 
-          grid.checkLastLocationClicked().equals(buttonTop))) {
-        return true;
-      }
-    return false;
-  }
+  // public boolean checkButtonClick() {
+  //     if (grid.checkLastLocationClicked() != null && 
+  //        (grid.checkLastLocationClicked().equals(buttonBot) || 
+  //         grid.checkLastLocationClicked().equals(buttonTop))) {
+  //       return true;
+  //     }
+  //   return false;
+  // }
 
   public void populateRightEdge(){
 
@@ -113,7 +125,7 @@ public class Game {
   }
   
   public void updateTitle() {
-    grid.setTitle("Game:  " + getScore());
+    diGrid.setTitle("Game:  " + getScore());
   }
   
   public boolean isGameOver() {

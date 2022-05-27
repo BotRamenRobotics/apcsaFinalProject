@@ -17,6 +17,10 @@ public class Location {
   }
   
   public boolean equals(Location otherLoc) {
+    if(otherLoc == null){
+      //System.out.println("Invalid otherLoc in equals() method");
+      return false;
+    }
     return row == otherLoc.getRow() && col == otherLoc.getCol();
   }
   
