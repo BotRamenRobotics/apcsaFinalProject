@@ -11,39 +11,52 @@ import characters.Demon;
 
 public class Game {
 
-  private Grid mapGrid;
-  private Grid diGrid;
   private Grid splashScreen;
   private Grid splashScreen2;
+  private Grid mapGrid;
+  private Grid diGrid;
 
   private Demon demon;
 
+  private int mapGridRows = 14;
+  private int mapGridCols = 9;
   private int userRow;
+  private int userCol;
   private int msElapsed;
   private int day; //Just here in case
   
-  private String userPic = "images/user.gif"; 
+  private String userPic = "images/zapdos.png"; 
 
   private Location buttonTop = new Location(5, 0);
   private Location buttonBot = new Location(7, 0);
 
-  public Game() {
-
-    splashScreen = new Grid(10, 20);
+  public Game() { 
+    
+    splashScreen = new Grid(15, 30);
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
-    userRow = 0;
+    splashScreen.fullscreen();
+
+    userRow = mapGridRows -1 ;
+    userCol = mapGridCols/2;
     msElapsed = 15;
     updateTitle();
   }
   
   public void play() {
 
+    //Splashscreen1
+    splashScreen();
+
+    //Splashscreen2
+    // splashScreen2();
+
+    //Begin Map Screen movement
+    mapGrid();
+
     while (!isGameOver()) {
-      splashScreen();
-      // splashScreen2();
-      mapGrid();
-      //handleKeyPress();
-      handleButtonClick();
+
+      handleKeyPress(mapGrid);
+      handleButtonClick(mapGrid);
       if (msElapsed % 300 == 0) {
         scrollLeft();
         populateRightEdge();
@@ -53,11 +66,11 @@ public class Game {
     }
   }
   
-  public void handleKeyPress(){
+  public void handleKeyPress(Grid grid){
 
     //check last key pressed
-    int key = mapGrid.checkLastKeyPressed();
-    System.out.println(key);
+    int key = grid.checkLastKeyPressed();
+    if(key != -1) System.out.println("Key pressed" + key);
 
     //set "w" key to move the plane up
     if(key == 87){
@@ -69,10 +82,10 @@ public class Game {
 
         //shift the user picture up in the array
         Location loc = new Location(userRow, 0);
-        mapGrid.setImage(loc, userPic);
+        grid.setImage(loc, userPic);
         
         Location oldLoc = new Location(userRow+1, 0);
-        mapGrid.setImage(oldLoc, null);
+        grid.setImage(oldLoc, null);
 
   }
     //if I push down arrow, then plane goes down
@@ -80,14 +93,18 @@ public class Game {
 
   }
   
-  public void handleButtonClick() {
-    Location loc = splashScreen.checkLastLocationClicked();
+  public void handleButtonClick(Grid grid) {
+    
+    Location loc = grid.checkLastLocationClicked();
+
     if(loc != null) System.out.println("Loc:" + loc);
 
-    if (buttonTop.equals(loc)) {
-      System.out.println("top");
-    } else if (buttonBot.equals(loc)) {
-      System.out.println("bot");
+    if(grid == diGrid){
+      if (buttonTop.equals(loc)) {
+        System.out.println("top");
+      } else if (buttonBot.equals(loc)) {
+        System.out.println("bot");
+      }
     }
 
 
@@ -107,17 +124,21 @@ public class Game {
   // }
   
   public void splashScreen() {
+    System.out.println("Splash screen");
     splashScreen.fullscreen();
     splashScreen.setBackground("images/Helltaker_Cover.jpg");
     splashScreen.waitForClick();
+    splashScreen.close();
   }
 
   public void mapGrid() {
-    mapGrid = new Grid(9, 14);
+    System.out.println("MapGrid initializing...");
+    mapGrid = new Grid(mapGridRows, mapGridCols);
     mapGrid.setTitle("Chambers of the Glorius");
     mapGrid.fullscreen();
     mapGrid.setBackground("images/map.png");
-    handleKeyPress();
+    mapGrid.setImage(new Location(userRow, userCol), userPic);
+    //handleKeyPress();
   }
 
   public void diGrid() {
