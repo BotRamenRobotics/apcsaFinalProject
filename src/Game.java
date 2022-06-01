@@ -27,6 +27,7 @@ public class Game {
   
   private String userPic = "images/zapdos.png"; 
 
+  private final Location lucyLoc = new Location(12, 2);
   private Location buttonTop = new Location(5, 0);
   private Location buttonBot = new Location(7, 0);
 
@@ -54,9 +55,10 @@ public class Game {
     mapGrid();
 
     while (!isGameOver()) {
-
       handleKeyPress(mapGrid);
+      checkLocation();
       handleButtonClick(mapGrid);
+
       if (msElapsed % 300 == 0) {
         scrollLeft();
         populateRightEdge();
@@ -73,24 +75,65 @@ public class Game {
     if(key != -1) System.out.println("Key pressed" + key);
 
     //set "w" key to move the plane up
-    if(key == 87){
+    if(key == 87){ //UP
         //check case where out of bounds
-
+      if (userRow == 0) {
+        System.out.println("User will go too high");
+      }
+      else {
         //change the field for userrow
 
         userRow--;
 
         //shift the user picture up in the array
-        Location loc = new Location(userRow, 0);
+        Location loc = new Location(userRow, userCol);
         grid.setImage(loc, userPic);
         
-        Location oldLoc = new Location(userRow+1, 0);
+        Location oldLoc = new Location(userRow+1, userCol);
         grid.setImage(oldLoc, null);
-
+      }
   }
     //if I push down arrow, then plane goes down
+    else if (key == 83) { //DOWN
+      if (userRow == mapGrid.getNumRows()-1) {
+        System.out.println("User will be too low!");
+      }
+      else {
+        userRow++;
 
-
+        Location loc = new Location(userRow, userCol);
+        grid.setImage(loc, userPic);
+        
+        Location oldLoc = new Location(userRow-1, userCol);
+        grid.setImage(oldLoc, null);
+      }
+    }
+    else if (key == 65) { //LEFT
+      if (userCol == 0) {
+        System.out.println("User will be too left!");
+      }
+      else {
+        userCol--;
+        Location loc = new Location(userRow, userCol);
+        grid.setImage(loc, userPic);
+        
+        Location oldLoc = new Location(userRow, userCol+1);
+        grid.setImage(oldLoc, null);
+      }
+    }
+    else if (key == 68) { //RIGHT
+      if (userCol == mapGrid.getNumCols() -1 ) {
+        System.out.println("User will be too right!");
+      }
+      else {
+        userCol++;
+        Location loc = new Location(userRow, userCol);
+        grid.setImage(loc, userPic);
+        
+        Location oldLoc = new Location(userRow, userCol-1);
+        grid.setImage(oldLoc, null);
+      }
+    }
   }
   
   public void handleButtonClick(Grid grid) {
@@ -122,10 +165,14 @@ public class Game {
   //     }
   //   return false;
   // }
+
+  public void checkLocation() {
+    
+  }
   
   public void splashScreen() {
     System.out.println("Splash screen");
-    splashScreen.fullscreen();
+    //splashScreen.fullscreen();
     splashScreen.setBackground("images/Helltaker_Cover.jpg");
     splashScreen.waitForClick();
     splashScreen.close();
@@ -135,10 +182,9 @@ public class Game {
     System.out.println("MapGrid initializing...");
     mapGrid = new Grid(mapGridRows, mapGridCols);
     mapGrid.setTitle("Chambers of the Glorius");
-    mapGrid.fullscreen();
+    //mapGrid.fullscreen();
     mapGrid.setBackground("images/map.png");
     mapGrid.setImage(new Location(userRow, userCol), userPic);
-    //handleKeyPress();
   }
 
   public void diGrid() {
