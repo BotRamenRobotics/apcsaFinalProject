@@ -16,6 +16,8 @@ public class Game {
   private Grid mapGrid;
   private Grid diGrid;
 
+  private boolean checkGrid;
+
   private Demon demon;
 
   private int mapGridRows = 14;
@@ -30,7 +32,7 @@ public class Game {
   private final Location lucyLoc = new Location(12, 2);
   private Location buttonTop = new Location(5, 0);
   private Location buttonBot = new Location(7, 0);
-
+  
   public Game() { 
     
     splashScreen = new Grid(15, 30);
@@ -52,12 +54,15 @@ public class Game {
     // splashScreen2();
 
     //Begin Map Screen movement
-    mapGrid();
+    
+    if (checkLocation()) {
+    diGrid();
+    }
 
     while (!isGameOver()) {
       handleKeyPress(mapGrid);
       checkLocation();
-      handleButtonClick(mapGrid);
+      handleButtonClick(diGrid);
 
       if (msElapsed % 300 == 0) {
         scrollLeft();
@@ -166,8 +171,14 @@ public class Game {
   //   return false;
   // }
 
-  public void checkLocation() {
-    
+  public boolean checkLocation() {
+    if (checkGrid) {
+    System.out.println(userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol());
+    if (userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol()) {
+      return true;
+    }
+    }
+    return false;
   }
   
   public void splashScreen() {
@@ -179,6 +190,7 @@ public class Game {
   }
 
   public void mapGrid() {
+    checkGrid = true;
     System.out.println("MapGrid initializing...");
     mapGrid = new Grid(mapGridRows, mapGridCols);
     mapGrid.setTitle("Chambers of the Glorius");
@@ -188,8 +200,11 @@ public class Game {
   }
 
   public void diGrid() {
+    checkGrid = false;
+    mapGrid.close();
     diGrid = new Grid(20, 35);
-    diGrid.setTitle(demon.getName() + "'s Room | " + getScore());
+    diGrid.setTitle("Lucy's Room | " + getScore());
+    diGrid.setBackground("images/room.jpg");
   }
 
   public void populateRightEdge(){
