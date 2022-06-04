@@ -15,6 +15,7 @@ public class Game {
   private Grid splashScreen2;
   private Grid mapGrid;
   private Grid diGrid;
+  private Grid currentGrid;
 
   private boolean checkGrid;
 
@@ -38,6 +39,7 @@ public class Game {
     splashScreen = new Grid(15, 30);
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
     splashScreen.fullscreen();
+    currentGrid = splashScreen;
 
     userRow = mapGridRows -1 ;
     userCol = mapGridCols/2;
@@ -54,20 +56,31 @@ public class Game {
     // splashScreen2();
 
     //Begin Map Screen movement
-    
-    if (checkLocation()) {
-    diGrid();
-    }
+    mapGrid();
+
 
     while (!isGameOver()) {
-      handleKeyPress(mapGrid);
-      checkLocation();
-      handleButtonClick(diGrid);
 
-      if (msElapsed % 300 == 0) {
-        scrollLeft();
-        populateRightEdge();
+      if(currentGrid == mapGrid){
+        handleKeyPress(mapGrid);
+        
+        if (checkLocation()) {
+          diGrid();
+        }
+
+      } else if (currentGrid == diGrid){
+
+        handleButtonClick(diGrid);
+
       }
+
+
+
+
+      // if (msElapsed % 300 == 0) {
+      //   scrollLeft();
+      //   populateRightEdge();
+      // }
       updateTitle();
       msElapsed += 100;
     }
@@ -173,10 +186,10 @@ public class Game {
 
   public boolean checkLocation() {
     if (checkGrid) {
-    System.out.println(userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol());
-    if (userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol()) {
-      return true;
-    }
+      System.out.println(userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol());
+      if (userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol()) {
+        return true;
+      }
     }
     return false;
   }
@@ -197,6 +210,7 @@ public class Game {
     //mapGrid.fullscreen();
     mapGrid.setBackground("images/map.png");
     mapGrid.setImage(new Location(userRow, userCol), userPic);
+    currentGrid = mapGrid;
   }
 
   public void diGrid() {
@@ -205,6 +219,7 @@ public class Game {
     diGrid = new Grid(20, 35);
     diGrid.setTitle("Lucy's Room | " + getScore());
     diGrid.setBackground("images/room.jpg");
+    currentGrid = diGrid;
   }
 
   public void populateRightEdge(){
@@ -220,7 +235,8 @@ public class Game {
   }
   
   public int getScore() {
-    return demon.getAffection();
+    return 0;
+    //return demon.getAffection();
   }
   
   public void updateTitle() {
