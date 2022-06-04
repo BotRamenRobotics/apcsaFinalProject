@@ -40,6 +40,7 @@ public class Game {
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
     splashScreen.fullscreen();
     currentGrid = splashScreen;
+    WavPlayer.play("sounds/Spongebob.wav");
 
     userRow = mapGridRows -1 ;
     userCol = mapGridCols/2;
