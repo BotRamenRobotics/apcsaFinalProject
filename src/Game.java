@@ -37,8 +37,8 @@ public class Game {
   private Location lucyLoc = new Location(12, 2); 
   //private Location buttonTop = new Location(5, 0);
   //private Location buttonBot = new Location(7, 0);
-  private ShapeButton buttonBot = new ShapeButton("option 1", 5);
-  private ShapeButton  buttonTop = new ShapeButton("option 100000", 5);
+  private ShapeButton buttonBot = new ShapeButton("cookie", 5);
+  private ShapeButton  buttonTop = new ShapeButton("something else", 5);
 
   private ArrayList<Choice> choice = new ArrayList<>();
   private ArrayList<Dialogue> dialogue = new ArrayList<>();
@@ -49,10 +49,10 @@ public class Game {
     splashScreen.fullscreen();
     currentGrid = splashScreen;
     WavPlayer.play("sounds/Spongebob.wav");
-    buttonBot.setPreferredSize(new Dimension(11,41));
-    buttonTop.setPreferredSize(new Dimension(11,21));
-    buttonTop.setLocation(10, 101);
-    buttonBot.setLocation(30,15);
+    buttonBot.setPreferredSize(new Dimension(15,21));
+    buttonTop.setPreferredSize(new Dimension(15,21));
+    buttonTop.setLocation(101, 101);
+    buttonBot.setLocation(101,301);
     //lucyLoc.add(new Location(r, c));
 
     userRow = mapGridRows -1 ;
