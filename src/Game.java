@@ -1,8 +1,11 @@
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 import characters.Demon;
+import characters.Lucy;
 
 /* Game Class Starter File
  * Last Edit: 5/6/2021
@@ -19,7 +22,7 @@ public class Game {
 
   private boolean checkGrid;
 
-  private Demon demon;
+  private Demon demon = new Lucy();
 
   private int mapGridRows = 14;
   private int mapGridCols = 9;
@@ -30,17 +33,27 @@ public class Game {
   
   private String userPic = "images/zapdos.png"; 
 
-  private final Location lucyLoc = new Location(12, 2);
-  private Location buttonTop = new Location(5, 0);
-  private Location buttonBot = new Location(7, 0);
-  
-  public Game() { 
-    
+  //private final ArrayList<Location> lucyLoc = new ArrayList<>();
+  private Location lucyLoc = new Location(12, 2); 
+  //private Location buttonTop = new Location(5, 0);
+  //private Location buttonBot = new Location(7, 0);
+  private ShapeButton buttonBot = new ShapeButton("option 1", 5);
+  private ShapeButton  buttonTop = new ShapeButton("option 100000", 5);
+
+  private ArrayList<Choice> choice = new ArrayList<>();
+  private ArrayList<Dialogue> dialogue = new ArrayList<>();
+
+  public Game() {
     splashScreen = new Grid(15, 30);
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
     splashScreen.fullscreen();
     currentGrid = splashScreen;
     WavPlayer.play("sounds/Spongebob.wav");
+    buttonBot.setPreferredSize(new Dimension(11,41));
+    buttonTop.setPreferredSize(new Dimension(11,21));
+    buttonTop.setLocation(10, 101);
+    buttonBot.setLocation(30,15);
+    //lucyLoc.add(new Location(r, c));
 
     userRow = mapGridRows -1 ;
     userCol = mapGridCols/2;
@@ -218,9 +231,13 @@ public class Game {
     checkGrid = false;
     mapGrid.close();
     diGrid = new Grid(20, 35);
-    diGrid.setTitle("Lucy's Room | " + getScore());
+    diGrid.add(buttonTop);
+    diGrid.add(buttonBot);
+    diGrid.setTitle(demon.getName() + " Room | " + getScore());
     diGrid.setBackground("images/room.jpg");
     currentGrid = diGrid;
+
+    diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
   }
 
   public void populateRightEdge(){
@@ -245,7 +262,7 @@ public class Game {
   }
   
   public boolean isGameOver() {
-    return false;
+    return (demon.getAffection() == 100);
   }
     
 

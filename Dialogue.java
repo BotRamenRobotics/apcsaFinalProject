@@ -11,8 +11,8 @@ public class Dialogue {
         this.demon = demon;
     }
 
-    public String displayDialogue(Dialogue dialogue) {
-        return null;
+    public String displayDialogue(Dialogue dialogue) { //use showMessageDialogue method in grid?
+        return line;
     }
 
 }
