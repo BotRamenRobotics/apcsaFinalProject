@@ -208,7 +208,7 @@ public class Game {
     System.out.println("MapGrid initializing...");
     mapGrid = new Grid(mapGridRows, mapGridCols);
     mapGrid.setTitle("Chambers of the Glorius");
-    //mapGrid.fullscreen();
+    mapGrid.fullscreen();
     mapGrid.setBackground("images/map.png");
     mapGrid.setImage(new Location(userRow, userCol), userPic);
     currentGrid = mapGrid;
