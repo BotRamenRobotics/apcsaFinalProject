@@ -4,6 +4,6 @@ public class Mammon extends Demon{
     
 
     public Mammon() {
-        super("Mammon");
+        super("Mammon","images/room.jpg");
     }
 }

@@ -4,6 +4,6 @@ public class Asmo extends Demon{
     
 
     public Asmo(){
-        super("Asmo");
+        super("Asmo","images/room.jpg");
     }
 }

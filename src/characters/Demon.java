@@ -4,10 +4,12 @@ public class Demon {
 
     private String name;
     private int affection;
+    private String roomImage;
     // private Dialogue dialogue;
 
-    public Demon(String name) {
+    public Demon(String name, String roomImage) {
         this.name = name;
+        this.roomImage = roomImage;
         affection = 0;
     }
 
@@ -21,5 +23,9 @@ public class Demon {
 
     public void changeAffection(int a) { //Base mutator
         affection += a;
+    }
+
+    public String getRoomImage(){
+        return roomImage;
     }
 }

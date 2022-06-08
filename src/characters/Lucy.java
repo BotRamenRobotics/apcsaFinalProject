@@ -4,7 +4,7 @@ public class Lucy extends Demon{
     
 
     public Lucy() {
-        super("Lucy");
+        super("Lucy", "images/room.jpg");
     }
 
 }

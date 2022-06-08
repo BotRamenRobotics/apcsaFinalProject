@@ -3,6 +3,6 @@ package characters;
 public class Satan extends Demon{
     
     public Satan() {
-        super("Satan");
+        super("Satan", "images/room.jpg");
     }
 }

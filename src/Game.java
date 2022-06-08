@@ -22,7 +22,7 @@ public class Game {
 
   private boolean checkGrid;
 
-  private Demon demon = new Lucy();
+  private Demon currentDemon = new Lucy();
 
   private int mapGridRows = 14;
   private int mapGridCols = 9;
@@ -42,12 +42,16 @@ public class Game {
 
   //Button constructor - top Text,, Top Affection, Bot Text, Bot affection, demon
 
-  private Button op1 = new Button("Something else", 12, "Cookie", 34, demon);
-
+  private Choice choice1 = new Choice("Something else", 12, "Cookie", 34, currentDemon, "images/leviproto.png", currentGrid);
+  private ArrayList<Choice> choices;
   //private ArrayList<Choice> choice = new ArrayList<>();
   private ArrayList<Dialogue> dialogue = new ArrayList<>();
 
   public Game() {
+
+    choices = new ArrayList<Choice>();
+    choices.add(choice1);
+
     splashScreen = new Grid(15, 30);
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
     splashScreen.fullscreen();
@@ -83,13 +87,19 @@ public class Game {
         handleKeyPress(mapGrid);
         
         if (checkLocation()) {
-          diGrid();
+          diGrid(currentDemon);
         }
 
       } else if (currentGrid == diGrid){
 
-        handleButtonClick(diGrid);
-        System.out.println(demon.getAffection());
+        Choice currentChoice = choices.get(0);
+        currentChoice.showChoice();
+        //handleButtonClick(diGrid);
+        checkButtonPress(currentGrid, currentChoice);
+        //do something after pressed
+        //reset to next choice
+
+        System.out.println(currentDemon.getAffection());
       }
 
 
@@ -173,14 +183,10 @@ public class Game {
     }
   }
   
-  public void handleButtonClick(Grid grid) {
+  public void handleButtonClick(Grid grid, Choice ch) {
     
     Location loc = grid.checkLastLocationClicked();
-
     if(loc != null) System.out.println("Loc:" + loc);
-
-    
-    buttonPress(diGrid, op1);
 
     // if(grid == diGrid){
     //   if (buttonTop.equals(loc)) {
@@ -235,16 +241,18 @@ public class Game {
     currentGrid = mapGrid;
   }
 
-  public void diGrid() {
+  public void diGrid(Demon d) {
+    currentGrid = diGrid;
     checkGrid = false;
     mapGrid.close();
     diGrid = new Grid(20, 35);
-    showButton(diGrid, op1);
-    diGrid.setTitle(demon.getName() + " Room | " + getScore());
-    diGrid.setBackground("images/room.jpg");
-    currentGrid = diGrid;
-
-    diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
+    diGrid.setBackground(d.getRoomImage());
+    diGrid.setTitle(currentDemon.getName() + " Room | " + getScore());  
+    //diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
+  
+    
+    //this.dialogRunner();
+  
   }
 
   // public void populateRightEdge(){
@@ -268,28 +276,24 @@ public class Game {
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
   }
 
-  public void buttonPress(Grid grid, Button b) {
+  public void checkButtonPress(Grid grid, Choice ch) {
 
-    if (b.getPress().equals("TOP")) {
-      demon.changeAffection(b.getTopAffection());
-      b.resetButtons();
-      hideButton(grid, b);
+    if (ch.getPress().equals("TOP")) {
+      currentDemon.changeAffection(ch.getTopAffection());
+      ch.resetButtons();
+      //hideButton(grid, ch);
     }
-    else if (b.getPress().equals("BOT")) {
-      demon.changeAffection(b.getBotAffection());
-      b.resetButtons();
-      hideButton(grid, b);
+    else if (ch.getPress().equals("BOT")) {
+      currentDemon.changeAffection(ch.getBotAffection());
+      ch.resetButtons();
+      //hideButton(grid, ch);
     }
 
   }
 
-  public void showButton(Grid grid, Button b) {
 
-    grid.add(b.getTop());
-    grid.add(b.getBot());
-  }
 
-  public void hideButton(Grid grid, Button b) {
+  public void hideButton(Grid grid, Choice b) {
 
     grid.remove(b.getTop());
     grid.remove(b.getBot());
@@ -298,11 +302,19 @@ public class Game {
   }
   
   public boolean isGameOver() {
-    return (demon.getAffection() >= 100);
+    return (currentDemon.getAffection() >= 100);
   }
     
-  public void dialogRunner() {
-    //looping through arraylist of dialogue objects with logic, if this option that option 
-    
-  }
+  // public void dialogRunner() {
+  //   //looping through arraylist of dialogue objects with logic, if this option that option 
+  //   int i = 0;
+  //   while(true){
+
+  //     showButton(diGrid, op1);
+  //     diGrid.setTitle(currentDemon.getName() + " Room | " + getScore());  
+  //     diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
+  
+  //   }
+
+  // }
 }
