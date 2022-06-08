@@ -37,8 +37,12 @@ public class Game {
   private Location lucyLoc = new Location(12, 2); 
   //private Location buttonTop = new Location(5, 0);
   //private Location buttonBot = new Location(7, 0);
-  private ShapeButton buttonBot = new ShapeButton("cookie", 5);
-  private ShapeButton  buttonTop = new ShapeButton("something else", 5);
+  // private ShapeButton buttonBot = new ShapeButton("cookie", 5);
+  // private ShapeButton  buttonTop = new ShapeButton("something else", 5);
+
+  //Button constructor - top Text,, Top Affection, Bot Text, Bot affection, demon
+
+  private Button op1 = new Button("Something else", 12, "Cookie", 34, demon);
 
   private ArrayList<Choice> choice = new ArrayList<>();
   private ArrayList<Dialogue> dialogue = new ArrayList<>();
@@ -49,10 +53,10 @@ public class Game {
     splashScreen.fullscreen();
     currentGrid = splashScreen;
     WavPlayer.play("sounds/Spongebob.wav");
-    buttonBot.setPreferredSize(new Dimension(15,21));
-    buttonTop.setPreferredSize(new Dimension(15,21));
-    buttonTop.setLocation(101, 101);
-    buttonBot.setLocation(101,301);
+    // buttonBot.setPreferredSize(new Dimension(15,21));
+    // buttonTop.setPreferredSize(new Dimension(15,21));
+    // buttonTop.setLocation(101, 101);
+    // buttonBot.setLocation(101, 301);
     //lucyLoc.add(new Location(r, c));
 
     userRow = mapGridRows -1 ;
@@ -85,7 +89,7 @@ public class Game {
       } else if (currentGrid == diGrid){
 
         handleButtonClick(diGrid);
-
+        System.out.println(demon.getAffection());
       }
 
 
@@ -98,6 +102,7 @@ public class Game {
       updateTitle();
       msElapsed += 100;
     }
+    System.out.println("Game is over");
   }
   
   public void handleKeyPress(Grid grid){
@@ -174,14 +179,17 @@ public class Game {
 
     if(loc != null) System.out.println("Loc:" + loc);
 
-    if(grid == diGrid){
-      if (buttonTop.equals(loc)) {
-        System.out.println("top");
-      } else if (buttonBot.equals(loc)) {
-        System.out.println("bot");
-      }
-    }
+    
+    buttonPress(diGrid, op1);
 
+    // if(grid == diGrid){
+    //   if (buttonTop.equals(loc)) {
+    //     System.out.println("top");
+    //   } else if (buttonBot.equals(loc)) {
+    //     System.out.println("bot");
+    //   }
+    // }
+     
 
       // grid.waitForClick();
       // if(checkButtonClick() == true) {
@@ -231,8 +239,7 @@ public class Game {
     checkGrid = false;
     mapGrid.close();
     diGrid = new Grid(20, 35);
-    diGrid.add(buttonTop);
-    diGrid.add(buttonBot);
+    showButton(diGrid, op1);
     diGrid.setTitle(demon.getName() + " Room | " + getScore());
     diGrid.setBackground("images/room.jpg");
     currentGrid = diGrid;
@@ -260,9 +267,38 @@ public class Game {
   public void updateTitle() {
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
   }
+
+  public void buttonPress(Grid grid, Button b) {
+
+    if (b.getPress().equals("TOP")) {
+      demon.changeAffection(b.getTopAffection());
+      b.resetButtons();
+      hideButton(grid, b);
+    }
+    else if (b.getPress().equals("BOT")) {
+      demon.changeAffection(b.getBotAffection());
+      b.resetButtons();
+      hideButton(grid, b);
+    }
+
+  }
+
+  public void showButton(Grid grid, Button b) {
+
+    grid.add(b.getTop());
+    grid.add(b.getBot());
+  }
+
+  public void hideButton(Grid grid, Button b) {
+
+    grid.remove(b.getTop());
+    grid.remove(b.getBot());
+    b.getTop().setVisible(false);
+    b.getBot().setVisible(false);
+  }
   
   public boolean isGameOver() {
-    return (demon.getAffection() == 100);
+    return (demon.getAffection() >= 100);
   }
     
 
