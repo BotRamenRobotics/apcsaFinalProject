@@ -200,7 +200,7 @@ public class Game {
 
   public boolean checkLocation() {
     if (checkGrid) {
-      System.out.println(userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol());
+      //System.out.println(userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol());
       if (userRow == lucyLoc.getRow() && userCol == lucyLoc.getCol()) {
         return true;
       }
@@ -240,17 +240,17 @@ public class Game {
     diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
   }
 
-  public void populateRightEdge(){
+  // public void populateRightEdge(){
 
-  }
+  // }
   
-  public void scrollLeft(){
+  // public void scrollLeft(){
 
-  }
+  // }
   
-  public void handleCollision(Location loc) {
+  // public void handleCollision(Location loc) {
 
-  }
+  // }
   
   public int getScore() {
     return 0;
