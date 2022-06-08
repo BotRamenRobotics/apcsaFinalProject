@@ -19,14 +19,14 @@ public class Button {
 
 
 //public Button(String tt, int ti, int td, String bt, int bi, int bd, Demon girl)
-    public Button(String tt, int td, String bt, int bd, Demon girl) {
+    public Button(String tt, int td, String bt, int bd, Demon demon) {
         buttonTop = new ShapeButton(tt, 5);
         buttonBot = new ShapeButton(bt, 5);
 
         topAff = td;
         botAff = bd;
 
-        demon = girl;
+        this.demon = demon;
 
         buttonBot.setPreferredSize(new Dimension(15,21));
     buttonTop.setPreferredSize(new Dimension(15,21));
