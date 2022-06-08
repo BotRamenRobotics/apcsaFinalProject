@@ -44,7 +44,7 @@ public class Game {
 
   private Button op1 = new Button("Something else", 12, "Cookie", 34, demon);
 
-  private ArrayList<Choice> choice = new ArrayList<>();
+  //private ArrayList<Choice> choice = new ArrayList<>();
   private ArrayList<Dialogue> dialogue = new ArrayList<>();
 
   public Game() {
@@ -301,5 +301,8 @@ public class Game {
     return (demon.getAffection() >= 100);
   }
     
-
+  public void dialogRunner() {
+    //looping through arraylist of dialogue objects with logic, if this option that option 
+    
+  }
 }

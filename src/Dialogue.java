@@ -1,18 +1,25 @@
+import java.util.ArrayList;
+
 import characters.Demon;
+import characters.Lucy;
 
 public class Dialogue {
     
     private String line;
     private Demon demon;
+    private Choice choice; 
+    private String image;
 
-    //private final String[] charList = {"Asmo", "Belle", "Levi", "Lucy", "Mammon", "Satan"};
+    //private final String[] demons = {"Asmo", "Belle", "Levi", "Lucy", "Mammon", "Satan"};
     
-    public Dialogue(Demon demon) {
-        this.demon = demon;
+    public Dialogue(String image, Choice choice, String line) {
+        this.image = image; 
+        this.choice = choice;
+        this.line = line; 
+        demon = new Lucy();
     }
 
-    public String displayDialogue(Dialogue dialogue) { //use showMessageDialogue method in grid?
-        return line;
+    public Dialogue displayDialogue() {
+        return null; //
     }
-
 }

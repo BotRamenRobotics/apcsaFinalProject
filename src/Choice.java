@@ -1,8 +1,19 @@
 public class Choice {
-    public boolean choice;
-    public String text;
+    private String a;
+    private String b;
 
-    public Choice() {
-        
+    public Choice(String text, String text2) {
+        this.a = text;
+        this.b = text2;
     }
+
+    public String getA() {
+        return a;
+    }
+
+    public String getB() {
+        return b;
+    }
+
+    
 }
