@@ -29,7 +29,9 @@ public class Game {
   private int userRow;
   private int userCol;
   private int msElapsed;
-  private int day; //Just here in case
+  public static int day = 0; //Just here in case
+  private String title;
+  private boolean lost = false;
   
   private String userPic = "images/zapdos.png"; 
 
@@ -40,10 +42,12 @@ public class Game {
   // private ShapeButton buttonBot = new ShapeButton("cookie", 5);
   // private ShapeButton  buttonTop = new ShapeButton("something else", 5);
 
-  //Button constructor - top Text,, Top Affection, Bot Text, Bot affection, demon
+  //Button constructor - top Text,, Top Affection, Bot Text, Bot affection, demon, char img, grid
 
-  private Choice choice1 = new Choice("Something else", 12, "Cookie", 34, currentDemon, "images/leviproto.png", currentGrid);
+  private Choice choice1 = new Choice("Something else", 12, "Cookie", 34, currentDemon, "images/lucy.png", currentGrid);
+  private Choice choice2 = new Choice("Very nice", 67, "Not good", 12, currentDemon, "images/LucyE.png", currentGrid);
   private ArrayList<Choice> choices;
+  private Choice end = new Choice("end", 0, "end", 0, currentDemon, "images/lucy.png", currentGrid);
   //private ArrayList<Choice> choice = new ArrayList<>();
   private ArrayList<Dialogue> dialogue = new ArrayList<>();
 
@@ -51,6 +55,9 @@ public class Game {
 
     choices = new ArrayList<Choice>();
     choices.add(choice1);
+    choices.add(choice2);
+
+    choices.add(end);
 
     splashScreen = new Grid(15, 30);
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
@@ -82,24 +89,39 @@ public class Game {
 
 
     while (!isGameOver()) {
-
-      if(currentGrid == mapGrid){
-        handleKeyPress(mapGrid);
         
+      if (day == 2) {
+        lost = true;
+      }
+
+      if(checkGrid){
+        handleKeyPress(mapGrid);
+        System.out.println("Map screen");
         if (checkLocation()) {
           diGrid(currentDemon);
         }
 
-      } else if (currentGrid == diGrid){
-
-        Choice currentChoice = choices.get(0);
-        currentChoice.showChoice();
-        //handleButtonClick(diGrid);
-        checkButtonPress(currentGrid, currentChoice);
-        //do something after pressed
-        //reset to next choice
-
+      } 
+      else if (!checkGrid) {
         System.out.println(currentDemon.getAffection());
+        Choice currentChoice = choices.get(day);
+        
+        
+        while ((!currentChoice.getPress().equals("TOP") || !currentChoice.getPress().equals("BOT"))) {
+          title = currentDemon.getName() + "\'s Room | " + currentDemon.getAffection();
+          diGrid.setTitle(title);
+          System.out.println("Day: " + day);
+          currentChoice = choices.get(day);
+          //diGrid(currentDemon);
+          showChoice(currentChoice);
+          checkButtonPress(currentGrid, currentChoice);
+        }
+      
+
+        
+        
+
+        
       }
 
 
@@ -113,6 +135,17 @@ public class Game {
       msElapsed += 100;
     }
     System.out.println("Game is over");
+
+    if (!lost) {
+      System.out.println("You won!");
+      diGrid.setBackground("images/win.png");
+    }
+    else if (lost) {
+      System.out.println("You lost!");
+    }
+    else {
+      System.out.println("You broke the game");
+    }
   }
   
   public void handleKeyPress(Grid grid){
@@ -225,7 +258,7 @@ public class Game {
   public void splashScreen() {
     System.out.println("Splash screen");
     //splashScreen.fullscreen();
-    splashScreen.setBackground("images/Helltaker_Cover.jpg");
+    splashScreen.setBackground("images/gamig.png");
     splashScreen.waitForClick();
     splashScreen.close();
   }
@@ -247,9 +280,12 @@ public class Game {
     mapGrid.close();
     diGrid = new Grid(20, 35);
     diGrid.setBackground(d.getRoomImage());
-    diGrid.setTitle(currentDemon.getName() + " Room | " + getScore());  
+    diGrid.setTitle(title);  
     //diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
-  
+   // choices.get(0).showChoice();
+
+   //diGrid.add(choices.get(day).getTop());
+   showChoice(choices.get(day));
     
     //this.dialogRunner();
   
@@ -281,12 +317,18 @@ public class Game {
     if (ch.getPress().equals("TOP")) {
       currentDemon.changeAffection(ch.getTopAffection());
       ch.resetButtons();
-      //hideButton(grid, ch);
+     // hideButton(grid, ch);
+     ch.getTop().setVisible(false);
+    ch.getBot().setVisible(false);
+      day++;
     }
     else if (ch.getPress().equals("BOT")) {
       currentDemon.changeAffection(ch.getBotAffection());
       ch.resetButtons();
-      //hideButton(grid, ch);
+     // hideButton(grid, ch);
+     ch.getTop().setVisible(false);
+    ch.getBot().setVisible(false);
+      day++;
     }
 
   }
@@ -302,7 +344,16 @@ public class Game {
   }
   
   public boolean isGameOver() {
-    return (currentDemon.getAffection() >= 100);
+    if ((currentDemon.getAffection() >= 100) || lost)
+    return true;
+    else
+    return false;
+  }
+
+  public void showChoice(Choice c) {
+   diGrid.add(c.getTop());
+    diGrid.add(c.getBot());
+    diGrid.setMultiCellImage(c.getImg(), new Location(1, 10), 15, 25);
   }
     
   // public void dialogRunner() {

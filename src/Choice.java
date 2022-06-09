@@ -22,14 +22,15 @@ public class Choice {
 //public Button(String tt, int ti, int td, String bt, int bi, int bd, Demon girl)
     public Choice(String tt, int ta, String bt, int ba, Demon demon, String cPic, Grid g) {
         this.g = g;
-        buttonTop = new ShapeButton(tt, 5);
-        buttonBot = new ShapeButton(bt, 5);
+        this.buttonTop = new ShapeButton(tt, 5);
+        this.buttonBot = new ShapeButton(bt, 5);
 
         topAff = ta;
         botAff = ba;
 
         this.demon = demon;
         this.currentPic = cPic;
+
         buttonBot.setPreferredSize(new Dimension(15,21));
         buttonTop.setPreferredSize(new Dimension(15,21));
         buttonTop.setLocation(101, 101);
@@ -53,13 +54,20 @@ public class Choice {
 
     }
 
-      //primary output from Choice class
-  public void showChoice() {
-    addButton(getTop());
-    addButton(getBot());
-    setImage();
-  }
+     // primary output from Choice class
+//   public void showChoice() {
+//     addButton(getTop());
+//     addButton(getBot());
+//     setImage();
+//   }
 
+public Grid getGrid() {
+    return g;
+}
+
+public String getImg() {
+    return currentPic;
+}
     public void setImage(){
         g.setMultiCellImage(currentPic, new Location(1, 10), 15, 25);
     }
