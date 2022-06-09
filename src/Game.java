@@ -90,7 +90,7 @@ public class Game {
 
     while (!isGameOver()) {
         
-      if (day == 2) {
+      if (day == (choices.size() - 1)) {
         lost = true;
       }
 
