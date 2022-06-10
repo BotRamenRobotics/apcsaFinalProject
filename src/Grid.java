@@ -1,8 +1,8 @@
 /*
- * Updated version of Grid class
- * Date 6/6/2022
- * waitForClick() returns a Location object
- * Cells resize to fit the window frame
+ * Grid class
+ * 6/6/22	Cells resize to fit the window frame
+ * 6/8/22	Fixed issue if null or empty String image loaded
+ * 6/9/22	Adjusted cell heights to account for 30 pixel title bar height
  */
 
 import java.awt.*;
@@ -19,6 +19,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 	private JFrame frame;
 	private int frameHeight = 600;
 	private int frameWidth = 800;
+	private int titleHeight = 30;
 	private boolean isFullScreen = false;
 	private int cellHeight;
 	private int cellWidth;
@@ -67,10 +68,14 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 		return cells[0].length;
 	}
 
-	public boolean isValid(final Location loc) {
-		final int row = loc.getRow();
-		final int col = loc.getCol();
-		return 0 <= row && row < getNumRows() && 0 <= col && col < getNumCols();
+	public boolean isValid(final Location loc){
+		if(loc!=null){
+			final int row = loc.getRow();
+			final int col = loc.getCol();
+			return 0 <= row && row < getNumRows() && 0 <= col && col < getNumCols();
+		} else {
+			return false;
+		}
 	}
 
 		// returns -1 if no key pressed since last call.
@@ -116,6 +121,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 
 	public void fullscreen() {
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.frameWidth = (int) screenSize.getWidth();
+		this.frameHeight = (int) (screenSize.getHeight() - titleHeight);
+
 		isFullScreen = true;
 	}
 
@@ -285,14 +294,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 		frame = new JFrame("Grid");
 		frame.addKeyListener(this);
 		frame.addMouseListener(this);
-		frame.getContentPane().add(this);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		System.out.println("cells setup with : " + numRows + "," + numCols);
-		System.out.println(cells.length + "," + cells[0].length);
-		System.out.println(getNumRows() + "," + getNumCols());
-		System.out.println(getCellHeight() + "," + getCellWidth());
+		//System.out.println(cells.length + "," + cells[0].length);
+		//System.out.println(getNumRows() + "," + getNumCols());
+		//System.out.println(getCellHeight() + "," + getCellWidth());
 
 		if(!isFullScreen){
 			int cellSize = Math.max(Math.min(frameHeight / getNumRows(), frameWidth / getNumCols()), 1);
@@ -300,25 +306,34 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 			cellWidth = frameWidth / getNumCols();
 			frame.setPreferredSize(new Dimension(cellSize * numCols, cellSize * numRows));
 		} else {
-			frameHeight = frame.getHeight();
+			frameHeight = getUsableFrameHeight();
 			frameWidth = frame.getWidth();
 			cellHeight = frameHeight / getNumRows();
 			cellWidth = frameWidth / getNumCols();
 		}
 
+		frame.getContentPane().add(this);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 
 	}
 
 	private BufferedImage loadImage(String imageFileName) {
-		final URL url = getClass().getResource(imageFileName);
-		if (url == null) {
-			throw new RuntimeException("cannot find file:  " + imageFileName);
-		}
-		try {
-			return ImageIO.read(url);
-		} catch (IOException e) {
-			throw new RuntimeException("unable to read from file:  " + imageFileName);
+		
+		if(imageFileName == null || "".equals(imageFileName)){
+			System.out.println("Image is null or \"\"");
+			return null;
+		} else{
+			final URL url = getClass().getResource(imageFileName);
+			if (url == null) {
+				throw new RuntimeException("cannot find file:  " + imageFileName);
+			}
+			try {
+				return ImageIO.read(url);
+			} catch (IOException e) {
+				throw new RuntimeException("unable to read from file:  " + imageFileName);
+			}
 		}
 	}
 
@@ -346,10 +361,16 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 	// }
 
 	private int getCellHeight(){
-		return frame.getHeight() / getNumRows();
+		//System.out.println("fh: " + frame.getHeight());
+		return getUsableFrameHeight() / getNumRows();
+	}
+
+	private int getUsableFrameHeight(){
+		return frame.getHeight() - this.titleHeight;
 	}
 
 	private int getCellWidth(){
+		//System.out.println("fw: " + frame.getWidth());
 		return frame.getWidth() / getNumCols();
 	}
 
@@ -365,7 +386,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 		//set background picture
 		if(bgSet) {
 			final int bgWidth = (int) (frame.getWidth()*xScale);
-			final int bgHeight = (int) (frame.getHeight()*yScale);
+			final int bgHeight = (int) (getUsableFrameHeight()*yScale);
 			g.drawImage(backgroundImage, xOffset, yOffset, bgWidth,bgHeight,null);
 			//g.drawImage(backgroundImage,0,0,frame.getWidth(),frame.getHeight(),null);
 		}
@@ -399,7 +420,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 				int xStartCol = startLoc.getCol();
 
 				int xStartPixel = xStartCol * cellWidth;
-				int yStartPixel = yStartRow * cellHeight;
+				int yStartPixel = yStartRow * cellHeight + titleHeight;
 
 				int drawHeight = mciHeight;
 				int drawWidth = mciWidth;
@@ -487,9 +508,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 		final int cellWidth = getCellWidth();
 		final int cellHeight = getCellHeight();
 
-		final int row = e.getY() / cellHeight;
+		final int row = (e.getY()-titleHeight) / cellHeight;
+		//System.out.println("ey" + e.getY() + "\tch: " + cellHeight + "\tey/ch: " + e.getY()/cellHeight);
 		if (row < 0 || row >= getNumRows())
 			return;
+
 		final int col = e.getX() / cellWidth;
 		if (col < 0 || col >= getNumCols())
 			return;
