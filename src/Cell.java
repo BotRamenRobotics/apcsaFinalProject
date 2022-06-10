@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 /* Updated 6/18/2020
  * Outline and OutlineColor added
  */ 

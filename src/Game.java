@@ -96,7 +96,7 @@ public class Game {
 
       if(checkGrid){
         handleKeyPress(mapGrid);
-        System.out.println("Map screen");
+        //System.out.println("Map screen");
         if (checkLocation()) {
           diGrid(currentDemon);
         }
@@ -278,11 +278,14 @@ public class Game {
     currentGrid = diGrid;
     checkGrid = false;
     mapGrid.close();
-    diGrid = new Grid(20, 35);
+//    diGrid = new Grid(20, 35);
+    diGrid = new Grid(20,35, true);
     diGrid.setBackground(d.getRoomImage());
+    diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
     diGrid.setTitle(title);  
-    //diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
-   // choices.get(0).showChoice();
+    diGrid.setDialogueText("Hi, I'm Spongebob");
+   
+    //choices.get(0).showChoice();
 
    //diGrid.add(choices.get(day).getTop());
    showChoice(choices.get(day));

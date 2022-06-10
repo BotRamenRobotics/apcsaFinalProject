@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.*;
 import javax.imageio.*;
 import javax.swing.*;
+import java.awt.Color;
 
 public class Grid extends JComponent implements KeyListener, MouseListener
 {
@@ -29,6 +30,15 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 	private boolean bgSet = false;
 	private McImage mcImage;
 	private boolean mciSet = false;
+
+	private boolean hasTopText = false;
+	private JTextPane topDialogueTextBox;
+	private JPanel picturePanel;
+	private String dialogueText =  "Hi! I'm Bob!";
+	private int descriptionTextSize = 20;
+	private Color dialogueTextColor = Color.BLACK;
+	private String dialogueTextFont = "sans-serif";
+
 
 	private int xOffset;
 	private int yOffset;
@@ -59,6 +69,25 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 		showFullImage(image);
 		setTitle(imageFileName);
 	}
+
+	//constructor for a Dialogue Grid
+	public Grid(int numRows, int numCols, boolean haTopTextBox) {
+		this.hasTopText = hasTopText;
+		init(numRows, numCols);
+
+		//ADDED TOP DIALOGUE BOX
+		topDialogueTextBox = new JTextPane();
+		topDialogueTextBox.setEditable(false);
+		topDialogueTextBox.setContentType("text/html");
+		setDialogueText(dialogueText);
+		frame.add(topDialogueTextBox, BorderLayout.NORTH);
+		//fullscreen();
+		finalizeFrameInit();
+
+	}
+
+
+
 
 	public int getNumRows() {
 		return cells.length;
@@ -311,12 +340,17 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 			cellHeight = frameHeight / getNumRows();
 			cellWidth = frameWidth / getNumCols();
 		}
+		if(!hasTopText){
+			finalizeFrameInit();
+		}
 
+	}
+
+	private void finalizeFrameInit(){
 		frame.getContentPane().add(this);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
-
 	}
 
 	private BufferedImage loadImage(String imageFileName) {
@@ -547,5 +581,44 @@ public class Grid extends JComponent implements KeyListener, MouseListener
 	public void keyReleased(final KeyEvent e) {
 		// ignored
 	}
+
+
+		//Prints a new message in the Adventure Description rectangle
+		public void setDialogueText(String newDescription){
+			dialogueText = newDescription;
+			String html = "<html><p style=\"";
+	
+			html += "color:";
+			html += getHTMLColorString(this.dialogueTextColor);
+			html += ";";
+	
+			html += "font:";
+			html += descriptionTextSize + "px";
+			html += ";";
+	
+			html += "font-family:";
+			html += this.dialogueTextFont;
+			html += ";";
+			
+			html += "text-align: center";
+			html += "\">";
+			html += this.dialogueText;
+			html += "</p></html>";
+	
+			this.topDialogueTextBox.setText(html);
+			//System.out.println(html);
+	
+		}
+
+		private String getHTMLColorString(Color color) {
+			String red = Integer.toHexString(color.getRed());
+			String green = Integer.toHexString(color.getGreen());
+			String blue = Integer.toHexString(color.getBlue());
+		
+			return "#" + 
+					(red.length() == 1? "0" + red : red) +
+					(green.length() == 1? "0" + green : green) +
+					(blue.length() == 1? "0" + blue : blue);  
+			}
 
 }  
