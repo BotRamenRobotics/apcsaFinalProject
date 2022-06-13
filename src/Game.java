@@ -32,7 +32,8 @@ public class Game {
   public static int day = 0; //Just here in case
   private String title;
   private boolean lost = false;
-  
+  private ArrayList<Choice> choices;
+
   private String userPic = "images/zapdos.png"; 
 
   //private final ArrayList<Location> lucyLoc = new ArrayList<>();
@@ -43,10 +44,19 @@ public class Game {
   // private ShapeButton  buttonTop = new ShapeButton("something else", 5);
 
   //Button constructor - top Text,, Top Affection, Bot Text, Bot affection, demon, char img, grid
+  private Choice continue1 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
+  private Choice continue2 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucyanger.png", currentGrid);
+  private Choice continue3 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
+  private Choice continue4 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
+  private Choice continue5 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
+  private Choice continue6 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
+  private Choice continue7 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
+  private Choice continue8 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
+  private Choice continue9 = new Choice("Continue", 0, "Continue", 0, currentDemon, "images/lucy.png", currentGrid);
 
-  private Choice choice1 = new Choice("Something else", 12, "Cookie", 34, currentDemon, "images/lucy.png", currentGrid);
-  private Choice choice2 = new Choice("Very nice", 67, "Not good", 12, currentDemon, "images/LucyE.png", currentGrid);
-  private ArrayList<Choice> choices;
+  private Choice choice1 = new Choice("Well, this pig is here to serve you your medicine…", 20, "The real pig here’s the helpless one coughing in her bed.", -100, currentDemon, "images/lucy.png", currentGrid);
+  private Choice choice2 = new Choice("“So how are you feeling?”", 20, "Watch her eat in silence.", 12, currentDemon, "images/lucy.png", currentGrid);
+  private Choice choice3 = new Choice("“You can boss me around anytime.”", 100, "“Yep, I’m stupid! That’s me.”", 10, currentDemon, "images/lucy.png", currentGrid);
   private Choice end = new Choice("end", 0, "end", 0, currentDemon, "images/lucy.png", currentGrid);
   //private ArrayList<Choice> choice = new ArrayList<>();
   private ArrayList<Dialogue> dialogue = new ArrayList<>();
@@ -54,8 +64,20 @@ public class Game {
   public Game() {
 
     choices = new ArrayList<Choice>();
+    choices.add(continue1);
+    choices.add(continue2);
+    choices.add(continue3);
+    choices.add(continue4);
+    choices.add(continue5);
     choices.add(choice1);
+
+    choices.add(continue6);
+    choices.add(continue7);
     choices.add(choice2);
+
+    choices.add(continue8);
+    choices.add(continue9);
+    choices.add(choice3);
 
     choices.add(end);
 
@@ -63,12 +85,7 @@ public class Game {
     splashScreen.setTitle("How I Managed to Date All 6 of the Strongest Demon Generals in the Underworld!");
     splashScreen.fullscreen();
     currentGrid = splashScreen;
-    WavPlayer.play("sounds/Spongebob.wav");
-    // buttonBot.setPreferredSize(new Dimension(15,21));
-    // buttonTop.setPreferredSize(new Dimension(15,21));
-    // buttonTop.setLocation(101, 101);
-    // buttonBot.setLocation(101, 301);
-    //lucyLoc.add(new Location(r, c));
+    WavPlayer.play("sounds/menumusic.wav");
 
     userRow = mapGridRows -1 ;
     userCol = mapGridCols/2;
@@ -81,56 +98,30 @@ public class Game {
     //Splashscreen1
     splashScreen();
 
-    //Splashscreen2
-    // splashScreen2();
-
     //Begin Map Screen movement
     mapGrid();
 
 
-    while (!isGameOver()) {
-        
+    while (!isGameOver()) {    
       if (day == (choices.size() - 1)) {
         lost = true;
       }
-
       if(checkGrid){
         handleKeyPress(mapGrid);
-        //System.out.println("Map screen");
         if (checkLocation()) {
           diGrid(currentDemon);
         }
-
       } 
       else if (!checkGrid) {
         System.out.println(currentDemon.getAffection());
-        Choice currentChoice = choices.get(day);
-        
-        
-        while ((!currentChoice.getPress().equals("TOP") || !currentChoice.getPress().equals("BOT"))) {
+          Choice currentChoice = choices.get(day);
           title = currentDemon.getName() + "\'s Room | " + currentDemon.getAffection();
           diGrid.setTitle(title);
           System.out.println("Day: " + day);
           currentChoice = choices.get(day);
-          //diGrid(currentDemon);
           showChoice(currentChoice);
           checkButtonPress(currentGrid, currentChoice);
-        }
-      
-
-        
-        
-
-        
       }
-
-
-
-
-      // if (msElapsed % 300 == 0) {
-      //   scrollLeft();
-      //   populateRightEdge();
-      // }
       updateTitle();
       msElapsed += 100;
     }
@@ -220,30 +211,7 @@ public class Game {
     
     Location loc = grid.checkLastLocationClicked();
     if(loc != null) System.out.println("Loc:" + loc);
-
-    // if(grid == diGrid){
-    //   if (buttonTop.equals(loc)) {
-    //     System.out.println("top");
-    //   } else if (buttonBot.equals(loc)) {
-    //     System.out.println("bot");
-    //   }
-    // }
-     
-
-      // grid.waitForClick();
-      // if(checkButtonClick() == true) {
-      //   System.out.println("hi!");
-      // }
   }
-
-  // public boolean checkButtonClick() {
-  //     if (grid.checkLastLocationClicked() != null && 
-  //        (grid.checkLastLocationClicked().equals(buttonBot) || 
-  //         grid.checkLastLocationClicked().equals(buttonTop))) {
-  //       return true;
-  //     }
-  //   return false;
-  // }
 
   public boolean checkLocation() {
     if (checkGrid) {
@@ -278,33 +246,18 @@ public class Game {
     currentGrid = diGrid;
     checkGrid = false;
     mapGrid.close();
-//    diGrid = new Grid(20, 35);
     diGrid = new Grid(20,35, true);
     diGrid.setBackground(d.getRoomImage());
-    diGrid.setMultiCellImage("images/leviproto.png", new Location(1, 10), 15, 25);
+    diGrid.setMultiCellImage("images/lucy.png", new Location(1, 10), 15, 25);
     diGrid.setTitle(title);  
-    diGrid.setDialogueText("Hi, I'm Spongebob");
-   
-    //choices.get(0).showChoice();
-
-   //diGrid.add(choices.get(day).getTop());
-   showChoice(choices.get(day));
     
-    //this.dialogRunner();
-  
+    diGrid.setDialogueText("Your hands tremble slightly as you open the door, a tray full of food in hand. \n“Miss Lucifer?”");
+    showChoice(choices.get(day));
+    
+    diGrid.setDialogueText("An annoyed yet hoarse voice can be heard in response. \n“Get my name out of your filthy mouth, sla-”");
+    showChoice(choices.get(day));
   }
 
-  // public void populateRightEdge(){
-
-  // }
-  
-  // public void scrollLeft(){
-
-  // }
-  
-  // public void handleCollision(Location loc) {
-
-  // }
   
   public int getScore() {
     return 0;
@@ -316,24 +269,22 @@ public class Game {
   }
 
   public void checkButtonPress(Grid grid, Choice ch) {
-
-    if (ch.getPress().equals("TOP")) {
-      currentDemon.changeAffection(ch.getTopAffection());
-      ch.resetButtons();
-     // hideButton(grid, ch);
-     ch.getTop().setVisible(false);
-    ch.getBot().setVisible(false);
-      day++;
-    }
-    else if (ch.getPress().equals("BOT")) {
-      currentDemon.changeAffection(ch.getBotAffection());
-      ch.resetButtons();
-     // hideButton(grid, ch);
-     ch.getTop().setVisible(false);
-    ch.getBot().setVisible(false);
-      day++;
-    }
-
+      if (ch.getPress().equals("TOP")) {
+        currentDemon.changeAffection(ch.getTopAffection());
+        ch.resetButtons();
+       // hideButton(grid, ch);
+       ch.getTop().setVisible(false);
+       ch.getBot().setVisible(false);
+        day++;
+      }
+      else if (ch.getPress().equals("BOT")) {
+        currentDemon.changeAffection(ch.getBotAffection());
+        ch.resetButtons();
+       // hideButton(grid, ch);
+       ch.getTop().setVisible(false);
+       ch.getBot().setVisible(false);
+        day++;
+      }
   }
 
 
@@ -347,10 +298,10 @@ public class Game {
   }
   
   public boolean isGameOver() {
-    if ((currentDemon.getAffection() >= 100) || lost)
-    return true;
-    else
-    return false;
+    if ((currentDemon.getAffection() >= 100) || lost) {
+    return true; }
+    else {
+    return false; }
   }
 
   public void showChoice(Choice c) {

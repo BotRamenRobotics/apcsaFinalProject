@@ -34,7 +34,7 @@ public class Choice {
         buttonBot.setPreferredSize(new Dimension(15,21));
         buttonTop.setPreferredSize(new Dimension(15,21));
         buttonTop.setLocation(101, 101);
-        buttonBot.setLocation(101, 301);
+        buttonBot.setLocation(101, 201);
 
         //showChoice();
 
@@ -53,6 +53,7 @@ public class Choice {
     });
 
     }
+
 
      // primary output from Choice class
 //   public void showChoice() {
